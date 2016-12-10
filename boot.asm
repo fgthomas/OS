@@ -1,20 +1,14 @@
+;Label offsets
+[org 0x7c00]
+
 ;print hello then loop forever
 	mov ah, 0x0e ;int 10/ah = 0eh -> teletype routine
 	
-	mov al, 'H'
+	mov al, [val]
 	int 0x10
-	mov al, 'e'
-	int 0x10
-	mov al, 'l'
-	int 0x10
-	mov al, 'l'
-	int 0x10
-	mov al, 'o'
-	int 0x10
-	mov al, 0xa
-	int 0x10
-	mov al, 0xd
-	int 0x10
+
+val:
+	db 'X'
 
 jmp $ ;loop forever
 
