@@ -1,16 +1,16 @@
 ;Label offsets
 [org 0x7c00]
 
-;print hello then loop forever
-	mov ah, 0x0e ;int 10/ah = 0eh -> teletype routine
-	
-	mov al, [val]
-	int 0x10
+	mov bx, hello
+	call puts
 
-val:
-	db 'X'
+	jmp $ ;loop forever
 
-jmp $ ;loop forever
+%include "print/print_string.asm" ;contains print_string function
+
+;Data
+hello:
+	db "hello world!", 0
 
 ;Set up boot sector
 times 510-($-$$) db 0
