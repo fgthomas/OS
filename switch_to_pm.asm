@@ -10,7 +10,7 @@ switch_to_pm:
 
 	jmp CODE_SEG:init_pm		;make far jump to clear pipeline
 
-[bits 32]
+[bits 64]
 init_pm:
 	mov ax, DATA_SEG
 	mov ds, ax

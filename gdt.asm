@@ -14,7 +14,7 @@ gdt_code:		;the code segment descriptor
 	dw 0x0		;Base (bits 0-15)
 	db 0x0		;Base (bits 16-23)
 	db 10011010b	;first flags, type flags
-	db 11001111b	;second flags, limit (bits 16-19)
+	db 11101111b	;second flags, limit (bits 16-19)
 	db 0x0
 
 gdt_data:
@@ -24,7 +24,7 @@ gdt_data:
 	dw 0x0		;base (bits 0-15)
 	db 0x0		;base (bits 16-23)
 	db 10010010b	;first flags, type flags
-	db 11001111b	;second flags, limit (bits 16-19)
+	db 11101111b	;second flags, limit (bits 16-19)
 	db 0x0		;base (bits 24-31)
 
 gdt_end:		;need calculate size
