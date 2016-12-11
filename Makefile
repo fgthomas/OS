@@ -16,17 +16,21 @@ GDT=gdt.asm
 SWTCH=switch_to_pm.asm
 DSK=load.asm
 
+#binary director
+BINDIR=bin
+
 ASFILES=${ASDIR}/${PUTS} ${ASDIR}/${PUTS32} ${ASDIR}/${GDT} ${ASDIR}/${SWTCH} ${ASDIR}/${DSK}
 
-BOOT_IMG=boot_sect.img
-
-all: boot_sect kernel.bin
+all: os.img boot_sect.bin kernel.bin
 
 kernel.bin: kernel.c
-	${CC} ${FLAGS} kernel.c -o kernel.o && ${LD} -o $@ ${LFLAGS} kernel.o
+	${CC} ${FLAGS} kernel.c -o kernel.o && ${LD} -o ${BINDIR}/$@ ${LFLAGS} kernel.o
 
-boot_sect: boot.asm ${ASFILES} kernel.bin
-	$(AS) $(RAW) $< -o $(BOOT_IMG)
+boot_sect.bin: boot.asm ${ASFILES} kernel.bin
+	$(AS) $(RAW) $< -o ${BINDIR}/$@
+
+os.img: boot_sect.bin kernel.bin
+	cd ${BINDIR} && cat $^ > ../$@ && cd ..
 
 clean:
-	rm *.o *.bin
+	rm *.o *.bin os.img
