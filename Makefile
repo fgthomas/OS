@@ -18,13 +18,14 @@ DSK=load.asm
 
 #binary director
 BINDIR=bin
+SRCDIR=src
 
 ASFILES=${ASDIR}/${PUTS} ${ASDIR}/${PUTS32} ${ASDIR}/${GDT} ${ASDIR}/${SWTCH} ${ASDIR}/${DSK}
 
 all: os.img boot_sect.bin kernel.bin
 
-kernel.bin: kernel.c
-	${CC} ${FLAGS} kernel.c -o kernel.o && ${LD} -o ${BINDIR}/$@ ${LFLAGS} kernel.o
+kernel.bin: ${SRCDIR}/kernel.c
+	${CC} ${FLAGS} ${SRCDIR}/kernel.c -o kernel.o && ${LD} -o ${BINDIR}/$@ ${LFLAGS} kernel.o
 
 boot_sect.bin: boot.asm ${ASFILES} kernel.bin
 	$(AS) $(RAW) $< -o ${BINDIR}/$@
