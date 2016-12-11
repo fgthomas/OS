@@ -34,4 +34,4 @@ os.img: boot_sect.bin kernel.bin
 	cd ${BINDIR} && cat $^ > ../$@ && cd ..
 
 clean:
-	rm *.o *.bin os.img
+	rm *.o ${BINDIR}/* os.img
