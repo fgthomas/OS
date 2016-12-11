@@ -1,5 +1,6 @@
 AS=nasm
 RAW=-f bin
+ELF=-f elf64
 
 CC=gcc
 FLAGS=-ffreestanding -c
@@ -22,16 +23,22 @@ SRCDIR=src
 
 ASFILES=${ASDIR}/${PUTS} ${ASDIR}/${PUTS32} ${ASDIR}/${GDT} ${ASDIR}/${SWTCH} ${ASDIR}/${DSK}
 
-all: os.img boot_sect.bin kernel.bin
+all: os.img ${BINDIR}/boot_sect.bin ${BINDIR}/kernel.bin
 
-kernel.bin: ${SRCDIR}/kernel.c
-	${CC} ${FLAGS} ${SRCDIR}/kernel.c -o kernel.o && ${LD} -o ${BINDIR}/$@ ${LFLAGS} kernel.o
+${BINDIR}/kernel.bin: ${SRCDIR}/kernel.o ${ASDIR}/entry.o
+	${LD} -o $@ ${LFLAGS} $^
 
-boot_sect.bin: boot.asm ${ASFILES} kernel.bin
-	$(AS) $(RAW) $< -o ${BINDIR}/$@
+${SRCDIR}/kernel.o: ${SRCDIR}/kernel.c
+	${CC} ${FLAGS} $< -o $@
 
-os.img: boot_sect.bin kernel.bin
-	cd ${BINDIR} && cat $^ > ../$@ && cd ..
+${ASDIR}/entry.o: ${ASDIR}/entry.asm
+	${AS} ${ELF} -o $@ $<
+
+${BINDIR}/boot_sect.bin: boot.asm ${ASFILES} ${BINDIR}/kernel.bin
+	$(AS) $(RAW) $< -o $@
+
+os.img: ${BINDIR}/boot_sect.bin ${BINDIR}/kernel.bin
+	cat $^ > ../$@
 
 clean:
-	rm *.o ${BINDIR}/* os.img
+	rm *.o ${BINDIR}/* ${SRCDIR}/*.o ${ASDIR}/*.o os.img
