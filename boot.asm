@@ -1,38 +1,33 @@
 ;Label offsets
 [org 0x7c00]
 
-	mov bp, 0x8000
+	mov bp, 0x9000
 	mov sp, bp
 
-	mov bx, 0x9000			;move 5 sectores to 0x9000
-	mov dh, 5
-	mov dl, [BOOT_DRIVE]
-	call disk_load
+	mov bx, MSG_REAL_MODE
+	call puts
 
-	mov dx, [0x9000]
-	call print_hex
+	call switch_to_pm
 
-	mov dx, [0x9200]
-	call print_hex
+	jmp $
 
-	jmp $ ;loop forever
+%include "print/print_string.asm"
+%include "gdt.asm"
+%include "print/print32.asm"
+%include "switch_to_pm.asm"
 
-%include "print/print_string.asm" 	;contains print_string function
-%include "disk/load.asm"		;contains disk_read function
-%include "print/print_hex.asm"		;contains print_hex function
+[bits 32]
+BEGIN_PM:
+	mov ebx, MSG_PROT_MODE
+	call print_string_pm
 
-;vars
-BOOT_DRIVE:
-	db 0
+	jmp $
 
-;Data
-hello:
-	db "hello world!", 0
+MSG_REAL_MODE:
+	db "Started in 16-bit Real Mode", 0
+MSG_PROT_MODE:
+	db "Successfully landed in 32-bit Protected Mode", 0
 
 ;Set up boot sector
 times 510-($-$$) db 0
 dw 0xaa55
-
-;add two sectors for space
-times 256 dw 0xdead
-times 256 dw 0xbeef
