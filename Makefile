@@ -3,11 +3,15 @@ RAW=-f bin
 ELF=-f elf64
 
 CC=gcc
-FLAGS=-ffreestanding -c
+FLAGS=-ffreestanding -c -Wall
 LD=ld
 LFLAGS=-Ttext 0x1000 --oformat binary
 
 #C files
+C_SOURCES = $(wildcard src/*.c)
+HEADER= $(wildcard src/*.h)
+
+OBJ = ${C_SOURCES:.c=.o}
 
 #assembly libraries
 ASDIR=asm
@@ -25,11 +29,9 @@ ASFILES=${ASDIR}/${PUTS} ${ASDIR}/${PUTS32} ${ASDIR}/${GDT} ${ASDIR}/${SWTCH} ${
 
 all: os.img ${BINDIR}/boot_sect.bin ${BINDIR}/kernel.bin
 
-${BINDIR}/kernel.bin: ${SRCDIR}/kernel.o ${ASDIR}/entry.o
+${BINDIR}/kernel.bin: ${OBJ} ${ASDIR}/entry.o
 	${LD} -o $@ ${LFLAGS} $^
 
-${SRCDIR}/kernel.o: ${SRCDIR}/kernel.c
-	${CC} ${FLAGS} $< -o $@
 
 ${ASDIR}/entry.o: ${ASDIR}/entry.asm
 	${AS} ${ELF} -o $@ $<
@@ -38,7 +40,7 @@ ${BINDIR}/boot_sect.bin: boot.asm ${ASFILES} ${BINDIR}/kernel.bin
 	$(AS) $(RAW) $< -o $@
 
 os.img: ${BINDIR}/boot_sect.bin ${BINDIR}/kernel.bin
-	cat $^ > ../$@
+	cat $^ > $@
 
 clean:
 	rm *.o ${BINDIR}/* ${SRCDIR}/*.o ${ASDIR}/*.o os.img
