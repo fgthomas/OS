@@ -21,7 +21,7 @@ Other than the boot medium, the default bochs settings are used.
 ## @TODO short-term
   Write screen device drivers, functions to print text to the screen and scroll.
   
-## TODO long-term
+## @TODO long-term
   Many device drivers
     keyboard
     screen
