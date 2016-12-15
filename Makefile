@@ -1,15 +1,15 @@
 AS=nasm
 RAW=-f bin
-ELF=-f elf64
+ELF=-f elf
 
 CC=gcc
-FLAGS=-ffreestanding -c -Wall
+FLAGS=-c -Wall -ffreestanding -Wextra -m32
 LD=ld
-LFLAGS=-Ttext 0x1000 --oformat binary
+LFLAGS=-Ttext 0x1000 --oformat binary -melf_i386
 
 #C files
-C_SOURCES = $(wildcard src/*.c)
-HEADER= $(wildcard src/*.h)
+C_SOURCES = $(wildcard src/*.c src/drivers/*.c)
+HEADER= $(wildcard src/*.h src/drivers/*.h)
 
 OBJ = ${C_SOURCES:.c=.o}
 
@@ -32,7 +32,6 @@ all: os.img ${BINDIR}/boot_sect.bin ${BINDIR}/kernel.bin
 ${BINDIR}/kernel.bin: ${OBJ} ${ASDIR}/entry.o
 	${LD} -o $@ ${LFLAGS} $^
 
-
 ${ASDIR}/entry.o: ${ASDIR}/entry.asm
 	${AS} ${ELF} -o $@ $<
 
@@ -42,5 +41,8 @@ ${BINDIR}/boot_sect.bin: boot.asm ${ASFILES} ${BINDIR}/kernel.bin
 os.img: ${BINDIR}/boot_sect.bin ${BINDIR}/kernel.bin
 	cat $^ > $@
 
+%.o: %.c ${HEADERS}
+	${CC} ${FLAGS} $< -o $@
+
 clean:
-	rm *.o ${BINDIR}/* ${SRCDIR}/*.o ${ASDIR}/*.o os.img
+	rm ${OBJ} os.img ${ASDIR}/*.o bin/*

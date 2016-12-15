@@ -33,7 +33,7 @@ load_kernel:
 	call disk_load
 	ret
 
-[bits 64]
+[bits 32]
 BEGIN_PM:
 	mov ebx, MSG_PROT_MODE
 	call print_string_pm
