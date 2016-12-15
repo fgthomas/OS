@@ -8,3 +8,4 @@
 #pragma once
 
 #include "aux.h"
+#include "screen.h"

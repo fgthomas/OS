@@ -8,8 +8,8 @@ LD=ld
 LFLAGS=-Ttext 0x1000 --oformat binary -melf_i386
 
 #C files
-C_SOURCES = $(wildcard src/*.c src/drivers/*.c)
-HEADER= $(wildcard src/*.h src/drivers/*.h)
+C_SOURCES = $(wildcard src/*.c src/drivers/*.c src/lib/*.c)
+HEADER= $(wildcard src/*.h src/drivers/*.h src/lib/*.h)
 
 OBJ = ${C_SOURCES:.c=.o}
 
