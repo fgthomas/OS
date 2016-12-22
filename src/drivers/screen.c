@@ -69,7 +69,7 @@ void print(char *str) {
 			y++;
 		}
 		if (y >= ROWS) {
-			//TODO implement scrolling
+			memcpy((void *) VIDEO_ADDRESS, (void *) ((char *) VIDEO_ADDRESS) + 2*COLS, 2*(ROWS-1)*COLS);
 			y = 0;
 		}
 	}
