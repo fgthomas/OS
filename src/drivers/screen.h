@@ -7,6 +7,7 @@
  */
 #pragma once
 #include "drivers.h"
+#include "../lib/fstring.h"
 
 void print(char *str);
 

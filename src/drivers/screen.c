@@ -70,7 +70,7 @@ void print(char *str) {
 		}
 		if (y >= ROWS) {
 			memcpy((void *) VIDEO_ADDRESS, (void *) ((char *) VIDEO_ADDRESS) + 2*COLS, 2*(ROWS-1)*COLS);
-			y = 0;
+			y = ROWS-1;
 		}
 	}
 	set_cursor(x, y);

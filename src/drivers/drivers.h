@@ -9,3 +9,4 @@
 
 #include "aux.h"
 #include "screen.h"
+#include "serial.h"
