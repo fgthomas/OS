@@ -19,10 +19,10 @@ Other than the boot medium, the default bochs settings are used.
   Currently the operating system has the assembly necassary to load the initial data into memory, switch to long mode, and call main.
   Printing characters to screen is currently done in assembly and main.
 ## @TODO short-term
-  Write screen device drivers, functions to print text to the screen and scroll.
+  Interrupt handler and context switching. Virtual memory. Heap management (malloc/free).
   
 ## @TODO long-term
-  Many device drivers
+  Many device drivers. e.g.
     keyboard
     screen
     storage
