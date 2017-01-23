@@ -17,7 +17,7 @@ Other than the boot medium, the default bochs settings are used.
 # Roadmap
 ## What's been done
   Currently the operating system has the assembly necassary to load the initial data into memory, switch to long mode, and call main.
-  Printing characters to screen is currently done in assembly and main.
+  From Main, the OS has the ability to print scrolling text to the screen, or write characters to a serial port which bochs will save as a t ext file.
 ## @TODO short-term
   Interrupt handler and context switching. Virtual memory. Heap management (malloc/free).
   
@@ -27,4 +27,4 @@ Other than the boot medium, the default bochs settings are used.
     screen
     storage
   File system
-  Process Scheduling
+  Process Creation and Scheduling
